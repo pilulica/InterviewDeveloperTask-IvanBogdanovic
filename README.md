@@ -32,7 +32,28 @@ A backend service for managing hierarchical supply chain relationships using a t
 - Flexible Querying: Generate tree view from any node as root
 
 # How to Run
-...
+### ✅ Requirements
+
+To run this application locally with Docker, make sure you have:
+
+- [Docker](https://www.docker.com/products/docker-desktop) installed and running  
+- `docker compose` command available (Docker CLI v20.10+)
+
+> 💡 You **do not** need to install Java, Gradle, or PostgreSQL manually.
+### 🐳 Run the Application with Docker
+
+To build and start the backend service and PostgreSQL database:
+
+1. Checkout the code in Folder
+   
+2. **Open a terminal in the root folder of the project**  
+   _(where `docker-compose.yml` is located)_
+
+3. Run the following command:
+
+```bash
+docker compose up --build
+```
 
 ## 📘 API Documentation
 
