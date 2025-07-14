@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    container_name: edge_tree_db
+    environment:
+      POSTGRES_DB: prewave_edge_tree_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./docker/db/init:/docker-entrypoint-initdb.d
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: edge_tree_app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: swagger
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/prewave_edge_tree_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres123
+    depends_on:
+      - db
+
+volumes:
+  db_data:
