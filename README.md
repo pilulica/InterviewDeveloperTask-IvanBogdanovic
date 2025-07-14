@@ -33,3 +33,12 @@ A backend service for managing hierarchical supply chain relationships using a t
 
 # How to Run
 ...
+
+## 📘 API Documentation
+
+This project includes auto-generated OpenAPI documentation via Swagger UI.
+
+- 📄 Base URL: `http://localhost:8080`
+- 🌐 Swagger UI: [`http://localhost:8080/swagger-ui.html`](http://localhost:8080/swagger-ui.html)
+- 🧪 You can test all endpoints directly in your browser.
+
