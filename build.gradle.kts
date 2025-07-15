@@ -66,9 +66,9 @@ jooq {
                 logging = org.jooq.meta.jaxb.Logging.WARN
                 jdbc.apply {
                     driver = "org.postgresql.Driver"
-                    url = System.getenv("JOOQ_JDBC_URL") ?: "jdbc:postgresql://localhost:5432/prewave_edge_tree_db"
-                    user = System.getenv("JOOQ_JDBC_USER") ?: "postgres"
-                    password = System.getenv("JOOQ_JDBC_PASSWORD") ?: "postgres123"
+                    url = "jdbc:postgresql://localhost:5432/prewave_edge_tree_db"
+                    user = "postgres"
+                    password = "postgres123"
                 }
                 generator.apply {
                     name = "org.jooq.codegen.KotlinGenerator"
