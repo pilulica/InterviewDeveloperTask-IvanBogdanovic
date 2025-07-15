@@ -5,7 +5,7 @@ WORKDIR /home/app
 
 RUN chmod +x ./gradlew
 
-RUN ./gradlew clean build --no-daemon
+RUN ./gradlew clean build -x generateJooq --no-daemon
 
 #------Runtime image------------
 FROM openjdk:17-jdk-slim
