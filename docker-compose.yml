@@ -14,19 +14,6 @@ services:
       - db_data:/var/lib/postgresql/data
       - ./docker/db/init:/docker-entrypoint-initdb.d
 
-  jooq:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: edge_tree_jooq_gen
-    depends_on:
-      - db
-    entrypoint: [ "./gradlew", "generateJooq", "--no-daemon" ]
-    environment:
-      JOOQ_JDBC_URL: jdbc:postgresql://db:5432/prewave_edge_tree_db
-      JOOQ_JDBC_USER: postgres
-      JOOQ_JDBC_PASSWORD: postgres123
-
   app:
     build:
       context: .
