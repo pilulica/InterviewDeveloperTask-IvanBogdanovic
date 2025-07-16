@@ -3,8 +3,8 @@ import nu.studer.gradle.jooq.JooqEdition
 plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
-    id("org.springframework.boot") version "3.5.3"
-    id("io.spring.dependency-management") version "1.1.7"
+    id("org.springframework.boot") version "3.2.5"
+    id("io.spring.dependency-management") version "1.1.4"
     id("nu.studer.jooq") version "8.2.1"
 }
 
@@ -29,7 +29,7 @@ dependencies {
     implementation("org.jooq:jooq-kotlin:3.18.7")
     implementation("org.springframework.boot:spring-boot-starter-jooq")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
