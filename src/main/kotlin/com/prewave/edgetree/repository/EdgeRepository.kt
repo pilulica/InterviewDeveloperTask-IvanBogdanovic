@@ -33,13 +33,21 @@ class EdgeRepository(
     fun createEdge(fromId: Int, toId: Int) {
         log.info("Creating edge from [$fromId] to [$toId]")
 
-        val parent = dslContext.selectCount()
-            .from(EDGE)
-            .where(EDGE.TO_ID.eq(toId))
-            .fetchOne(0, Int::class.java) ?: 0
+        val edgeAlreadyExists = dslContext.fetchExists(
+            EDGE.where(EDGE.FROM_ID.eq(fromId).and(EDGE.TO_ID.eq(toId)))
+        )
 
-        if (parent > 0) {
-            log.warn("Node [$toId] already has a parent — cannot add edge from [$fromId]")
+        if (edgeAlreadyExists) {
+            log.warn("Edge from [$fromId] to [$toId] already exists")
+            throw EdgeAlreadyExistsException(fromId, toId)
+        }
+
+        val edgeAlreadyHasParent = dslContext.fetchExists(
+            EDGE.where(EDGE.TO_ID.eq(toId))
+        )
+
+        if (edgeAlreadyHasParent) {
+            log.warn("Node [$toId] already has a parent, cannot add edge from [$fromId]")
             throw EdgeNodeAlreadyHasParentException(fromId, toId)
         }
 
@@ -49,16 +57,11 @@ class EdgeRepository(
             throw EdgeCycleDetectedException(fromId, toId)
         }
 
-        val result = dslContext.insertInto(EDGE)
+        dslContext.insertInto(EDGE)
             .set(EDGE.FROM_ID, fromId)
             .set(EDGE.TO_ID, toId)
-            .onConflict(EDGE.FROM_ID, EDGE.TO_ID)
-            .doNothing().execute()
+            .execute()
 
-        if (result == 0) {
-            log.warn("Edge from [$fromId] to [$toId] already exists")
-            throw EdgeAlreadyExistsException(fromId, toId)
-        }
         log.info("Edge from [$fromId] to [$toId] successfully created")
     }
 
@@ -177,12 +180,12 @@ class EdgeRepository(
     }
 
     private fun buildEdgeNode(nodeId: Int, edgeMap: Map<Int, List<Int>>): EdgeNode {
-            val childrenIds = edgeMap[nodeId] ?: emptyList()
-            log.debug("Building EdgeNode for [$nodeId] and all children [size: ${childrenIds.size}]")
+        val childrenIds = edgeMap[nodeId] ?: emptyList()
+        log.debug("Building EdgeNode for [$nodeId] and all children [size: ${childrenIds.size}]")
 
-            val children = childrenIds.map { childId ->
-                buildEdgeNode(childId, edgeMap)
-            }
+        val children = childrenIds.map { childId ->
+            buildEdgeNode(childId, edgeMap)
+        }
 
         return EdgeNode(nodeId, children)
     }
