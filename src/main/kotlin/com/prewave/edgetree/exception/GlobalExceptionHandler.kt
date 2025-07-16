@@ -1,13 +1,11 @@
 package com.prewave.edgetree.exception
 
-import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
-@Profile("!swagger")
 class GlobalExceptionHandler {
 
     @ExceptionHandler(
@@ -15,7 +13,8 @@ class GlobalExceptionHandler {
         EdgeNotFoundException::class,
         EdgeNodeNotFoundException::class,
         EdgeCycleDetectedException::class,
-        EdgeCycleUndecidableException::class
+        EdgeCycleUndecidableException::class,
+        EdgeNodeAlreadyHasParentException::class,
     )
     fun handleKnownExceptions(ex: RuntimeException): ResponseEntity<ApiError> {
         val status = when (ex) {
