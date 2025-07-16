@@ -32,14 +32,15 @@ A backend service for managing hierarchical supply chain relationships using a t
 - Flexible Querying: Generate tree view from any node as root
 
 # How to Run
-## ✅ Requirements
+## ✅ Requirements (Docker way)
 
 To run this application locally with Docker, make sure you have:
 
 - [Docker](https://www.docker.com/products/docker-desktop) installed and running  
 - `docker compose` command available (Docker CLI v20.10+)
+- java17-jdk installed and added to JAVA_HOME in environment variables
 
-> 💡 You **do not** need to install Java, Gradle, or PostgreSQL manually.
+> 💡 You **do not** need to install Gradle, or PostgreSQL manually.
 ## 🐳 Run the Application with Docker
 
 To build and start the backend service and PostgreSQL database:
@@ -85,10 +86,51 @@ cd InterviewDeveloperTask-IvanBogdanovic
 ### 2. **Open a terminal in the root folder of the project**  
    _(where `docker-compose.yml` is located)_
 
-### 3. Run the following command:
+### 3. Run the following commands:
 
 ```bash
-docker compose up --build
+docker compose up -d db
+
+./gradlew clean build
+
+docker compose up -d app
+```
+
+##  ✅ Requirements (without Docker)
+
+To run this application locally, make sure you have:
+
+- IntelliJ (optional) 
+- java17-jdk installed and added to JAVA_HOME in environment variables
+- PostgreSQL (my version 17.5)
+## Run the Application Manually
+
+### 1. Checkout the code in Folder(same way as described above)
+
+### 2. Create Database
+
+- Create PostgreSQL db prewave_edge_tree_db and execute script
+- Go to folder(checkout code)
+
+```bash
+// CREATE DB
+createdb -U postgres prewave_edge_tree_db
+```
+
+```bash
+ // INSERT SCHEME, TABLE AND RECORDS
+psql -U postgres -d prewave_edge_tree_db -f docker/db/init/init.sql
+```
+### 3. Open terminal 
+```bash
+RUN
+./gradlew clean build
+```
+
+### 4. Run app from IntelliJ or from terminal with command 
+
+```bash
+./gradlew bootRun
 ```
 
 ## 📘 API Documentation
